@@ -2,18 +2,30 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const connectDB = require("./config/db");
+const rootRouter = require("./routes/rootRouter");
 
 const app = express();
 
 // Connect to MongoDB
 connectDB();
 
+// CORS configuration (adjust origin as needed)
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    credentials: true,
+  })
+);
+
 // Middlewares
-app.use(cors());
 app.use(express.json());
 
+// API Routes
+app.use(rootRouter);
+
+// Default route
 app.get("/", (req, res) => {
-  res.send("API is running...");
+  res.send("🎓 BRAC Education & Communication API is running...");
 });
 
 const PORT = process.env.PORT || 5000;

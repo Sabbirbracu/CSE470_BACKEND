@@ -1,29 +1,26 @@
 const mongoose = require('mongoose');
 
-const courseSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true
-  },
-  description: {
-    type: String
-  },
-  instructor: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Teacher
-    required: true
-  },
-  outline: {
-    type: String // Course outline document
-  },
-  sections: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'CourseSection'
-  }],
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
+const TopicSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  type: { type: String, enum: ['quiz', 'midterm', 'exam', 'project'], default: 'lecture' }
 });
 
-module.exports = mongoose.model('Course', courseSchema);
+const WeekSchema = new mongoose.Schema({
+  week: { type: Number, required: true },
+  topics: [TopicSchema]
+});
+
+const InstructorSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  img: { type: String }, // Optional image URL
+  bio: { type: String }
+});
+
+const CourseSchema = new mongoose.Schema({
+  courseId: { type: String, required: true, unique: true },
+  courseName: { type: String, required: true },
+  instructor: InstructorSchema,
+  weeks: [WeekSchema]
+}, { timestamps: true });
+
+module.exports = mongoose.model('Course', CourseSchema);

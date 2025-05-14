@@ -1,31 +1,20 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
+  uid: { type: String, required: true, unique: true }, // Firebase UID
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  photoURL: { type: String },
   role: {
     type: String,
-    enum: ['Student', 'Teacher', 'Admin'],
+    enum: ['student', 'teacher', 'admin'],
     required: true
   },
-  profilePicture: {
-    type: String
-  },
-  enrolledCourses: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Course'
-  }],
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
+  enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }], // for students
+  assignedCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }], // for teachers
+}, {
+  timestamps: true
 });
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+module.exports = User;
