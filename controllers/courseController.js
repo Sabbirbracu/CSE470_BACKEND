@@ -1,4 +1,6 @@
 const Course = require('../models/Course');
+const User = require('../models/User');
+
 const mongoose = require('mongoose');
 
 // @desc    Create a new course (teacher only)
@@ -112,10 +114,37 @@ exports.deleteCourse = async (req, res) => {
   }
 };
 
+
+// ✅ Get pending enrollment requests for a specific course
+exports.getPendingEnrollments = async (req, res) => {
+  try {
+    const courseId = req.params.courseId;
+
+    const course = await Course.findById(courseId)
+      .populate('pendingEnrollments', 'name email photoURL uid');
+
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+
+    // Optional: check if requester is the course instructor
+    if (req.user.role !== 'teacher' || !course.instructorRef.equals(req.user._id)) {
+      return res.status(403).json({ message: 'Access denied. You are not the course instructor.' });
+    }
+
+    res.status(200).json(course.pendingEnrollments);
+  } catch (error) {
+    console.error('Error fetching pending enrollments:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
 module.exports = {
   createCourse,
   getAllCourses,
   getCourseById,
   updateCourse,
-  deleteCourse
+  deleteCourse,
+  getPendingEnrollments
 };

@@ -27,7 +27,17 @@ const courseSchema = new mongoose.Schema({
         }
       ]
     }
-  ]
+  ],
+  // NEW: Students who requested to enroll but are waiting for teacher approval
+  pendingEnrollments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  // NEW: Students who are enrolled after teacher approval
+  enrolledStudents: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }]
 }, {
   timestamps: true
 });
