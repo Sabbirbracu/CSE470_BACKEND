@@ -1,9 +1,8 @@
 const Course = require('../models/Course');
 const User = require('../models/User');
-
 const mongoose = require('mongoose');
 
-// @desc    Create a new course (teacher only)
+// Create a new course (teacher only)
 const createCourse = async (req, res) => {
   try {
     const { courseId, courseName, weeks, instructorBio } = req.body;
@@ -43,8 +42,8 @@ const createCourse = async (req, res) => {
 };
 
 
-// @desc    Get all courses
-exports.getAllCourses = async (req, res) => {
+// Get all courses
+const getAllCourses = async (req, res) => {
   try {
     // ✅ Populate instructorRef with minimal info
     const courses = await Course.find().populate('instructorRef', 'name email photoURL');
@@ -56,8 +55,8 @@ exports.getAllCourses = async (req, res) => {
 };
 
 
-// @desc    Get course by ID
-exports.getCourseById = async (req, res) => {
+// Get course by ID
+const getCourseById = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id).populate('instructorRef', 'name email photoURL');
 
@@ -71,8 +70,8 @@ exports.getCourseById = async (req, res) => {
 };
 
 
-// @desc    Update course by ID (only owner teacher)
-exports.updateCourse = async (req, res) => {
+// Update course by ID (only owner teacher)
+const updateCourse = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
 
@@ -93,8 +92,8 @@ exports.updateCourse = async (req, res) => {
 };
 
 
-// @desc    Delete course by ID (only owner teacher)
-exports.deleteCourse = async (req, res) => {
+// Delete course by ID (only owner teacher)
+const deleteCourse = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
 
@@ -116,7 +115,7 @@ exports.deleteCourse = async (req, res) => {
 
 
 // ✅ Get pending enrollment requests for a specific course
-exports.getPendingEnrollments = async (req, res) => {
+const getPendingEnrollments = async (req, res) => {
   try {
     const courseId = req.params.courseId;
 
