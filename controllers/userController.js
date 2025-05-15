@@ -1,7 +1,7 @@
 const User = require('../models/User');
 
 // Create or Update User
-exports.createOrUpdateUser = async (req, res) => {
+const createOrUpdateUser = async (req, res) => {
   try {
     const { uid, name, email, photoURL, role } = req.body;
 
@@ -23,7 +23,7 @@ exports.createOrUpdateUser = async (req, res) => {
 };
 
 // Get user by UID
-exports.getUserByUID = async (req, res) => {
+const getUserByUID = async (req, res) => {
   try {
     const { uid } = req.params;
     const user = await User.findOne({ uid }).populate('enrolledCourses assignedCourses');
@@ -38,7 +38,7 @@ exports.getUserByUID = async (req, res) => {
 };
 
 // Update user by UID
-exports.updateUser = async (req, res) => {
+const updateUser = async (req, res) => {
   try {
     const { uid } = req.params;
     const updates = req.body;
@@ -55,7 +55,7 @@ exports.updateUser = async (req, res) => {
 };
 
 // Get all users by role
-exports.getUsersByRole = async (req, res) => {
+const getUsersByRole = async (req, res) => {
   try {
     const { role } = req.params;
     const users = await User.find({ role });
@@ -68,7 +68,7 @@ exports.getUsersByRole = async (req, res) => {
 };
 
 // Delete user (optional)
-exports.deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
   try {
     const { uid } = req.params;
     const deletedUser = await User.findOneAndDelete({ uid });
@@ -80,4 +80,13 @@ exports.deleteUser = async (req, res) => {
     console.error('Error deleting user:', error);
     res.status(500).json({ message: 'Server error' });
   }
+};
+
+
+module.export = {
+  createOrUpdateUser,
+  getUserByUID,
+  updateUser,
+  getUsersByRole,
+  deleteUser
 };
