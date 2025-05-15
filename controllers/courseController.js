@@ -42,9 +42,8 @@ const createCourse = async (req, res) => {
   }
 };
 
-
 // @desc    Get all courses
-exports.getAllCourses = async (req, res) => {
+const getAllCourses = async (req, res) => {
   try {
     // ✅ Populate instructorRef with minimal info
     const courses = await Course.find().populate('instructorRef', 'name email photoURL');
@@ -55,9 +54,8 @@ exports.getAllCourses = async (req, res) => {
   }
 };
 
-
 // @desc    Get course by ID
-exports.getCourseById = async (req, res) => {
+const getCourseById = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id).populate('instructorRef', 'name email photoURL');
 
@@ -70,9 +68,8 @@ exports.getCourseById = async (req, res) => {
   }
 };
 
-
 // @desc    Update course by ID (only owner teacher)
-exports.updateCourse = async (req, res) => {
+const updateCourse = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
 
@@ -92,9 +89,8 @@ exports.updateCourse = async (req, res) => {
   }
 };
 
-
 // @desc    Delete course by ID (only owner teacher)
-exports.deleteCourse = async (req, res) => {
+const deleteCourse = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
 
