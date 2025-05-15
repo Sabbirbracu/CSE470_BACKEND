@@ -5,22 +5,20 @@ const {
   getAllCourses,
   getCourseById,
   updateCourse,
-  deleteCourse
+  deleteCourse,
+  getPendingEnrollments
 } = require('../controllers/courseController');
 
 const { isTeacher } = require('../middleware/authMiddleware');
+const verifyToken = require('../middleware/verifyToken');
 
-const courseController = require('../controllers/courseController');
-const { isTeacher } = require('../middlewares/authMiddleware');
-
-// Only teachers can create courses
-router.post('/', isTeacher, createCourse);
+// Protected route: only verified teachers can create courses
+router.post('/', verifyToken, isTeacher, createCourse);
 
 router.get('/', getAllCourses);
 router.get('/:id', getCourseById);
-router.put('/:id', updateCourse);
+router.put('/:id', updateCourse); // You might want to protect this as well
 router.delete('/:id', deleteCourse);
-// Route to get pending enrollments for a course (only accessible by the teacher)
-router.get('/:courseId/pending-enrollments', isTeacher, courseController.getPendingEnrollments);
+router.get('/:courseId/pending-enrollments', verifyToken, isTeacher, getPendingEnrollments);
 
 module.exports = router;

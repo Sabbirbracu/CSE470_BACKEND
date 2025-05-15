@@ -1,20 +1,22 @@
 const express = require('express');
-const { isStudent, isTeacher } = require('../middlewares/authMiddleware');
+const router = express.Router();
+
+const { isStudent, isTeacher } = require('../middleware/authMiddleware');
+const verifyToken = require('../middleware/verifyToken');
+
 const {
   requestEnrollment,
   approveEnrollment,
-  declineEnrollment, // ✅ NEW
+  declineEnrollment,
 } = require('../controllers/courseEnrollmentController');
 
-const router = express.Router();
+// Student submits enrollment request
+router.post('/request', verifyToken, isStudent, requestEnrollment);
 
-// ✅ Student submits enrollment request
-router.post('/request', isStudent, requestEnrollment);
+// Teacher approves enrollment
+router.post('/approve', verifyToken, isTeacher, approveEnrollment);
 
-// ✅ Teacher approves enrollment request
-router.post('/approve', isTeacher, approveEnrollment);
-
-// ✅ Teacher declines enrollment request
-router.post('/decline', isTeacher, declineEnrollment);
+// Teacher declines enrollment
+router.post('/decline', verifyToken, isTeacher, declineEnrollment);
 
 module.exports = router;
