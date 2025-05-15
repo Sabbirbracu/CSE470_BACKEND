@@ -3,8 +3,8 @@ const express = require('express');
 const router = express.Router();
 
 // Import feature-specific routers
-const userRoutes = require('./routes/userRoutes');
-const courseRoutes = require('./routes/courseRoutes');
+const userRoutes = require('./userRoutes');
+const courseRoutes = require('./courseRoutes');
 
 // Mount them under /api
 router.use('/api/users', userRoutes);
