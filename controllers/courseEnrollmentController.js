@@ -2,7 +2,7 @@ const Course = require('../models/Course');
 const User = require('../models/User');
 
 // ✅ Student requests enrollment
-exports.requestEnrollment = async (req, res) => {
+const requestEnrollment = async (req, res) => {
   try {
     const { courseId } = req.body;
     const student = req.user; // populated by isStudent middleware
@@ -31,7 +31,7 @@ exports.requestEnrollment = async (req, res) => {
 };
 
 // ✅ Teacher approves enrollment
-exports.approveEnrollment = async (req, res) => {
+const approveEnrollment = async (req, res) => {
   try {
     const { courseId, studentId } = req.body;
     const teacher = req.user; // populated by isTeacher middleware
@@ -69,7 +69,7 @@ exports.approveEnrollment = async (req, res) => {
 };
 
 // ✅ Teacher declines enrollment
-exports.declineEnrollment = async (req, res) => {
+const declineEnrollment = async (req, res) => {
   try {
     const { courseId, studentId } = req.body;
     const teacher = req.user;
@@ -98,4 +98,11 @@ exports.declineEnrollment = async (req, res) => {
     console.error('Decline failed:', error);
     res.status(500).json({ message: 'Server error' });
   }
+};
+
+
+module.exports = {
+  requestEnrollment,
+  approveEnrollment,
+  declineEnrollment
 };
